@@ -6,6 +6,7 @@ import com.petdoctor.outer.model.AppUser;
 import com.petdoctor.outer.service.RedisService;
 import com.petdoctor.outer.tool.JsonProcessor;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,33 +16,25 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RedisServiceImpl implements RedisService {
 
-    private final RedisTemplate<String, JsonNode> redisTemplate;
+    public static final String HASH_KEY = "Users";
+    private final RedisTemplate<String, AppUser> redisTemplate;
 
     @Override
     public void set(AppUser user) {
 
-        JsonNode node = JsonProcessor.parseToJsonNode(user);
+        redisTemplate.opsForHash().put(HASH_KEY, user.getUsername(), user);
 
-        if (node == null) {
-            throw new RuntimeException("aboba");
-        }
-
-        String username = user.getUsername();
-        JsonNode changedNode = JsonProcessor.removeFieldFromJson(username, node);
-
-        redisTemplate.opsForValue().set(username, changedNode);
     }
 
     @Override
-    public Optional<AppUser> get(String username) {
+    public AppUser get(String username) {
 
-        JsonNode node = redisTemplate.opsForValue().get(username);
+        AppUser user = (AppUser) redisTemplate.opsForHash().get(HASH_KEY, username);
 
-        if (node == null) {
+        if (user == null) {
             throw new RuntimeException();
         }
 
-        return Optional.of(
-                JsonProcessor.parseFromJsonNode(username, node));
+        return user;
     }
 }

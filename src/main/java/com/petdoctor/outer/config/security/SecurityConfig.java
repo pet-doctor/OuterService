@@ -56,18 +56,11 @@ public class SecurityConfig {
 
         // Set permissions on endpoints
         http.authorizeRequests()
+                .antMatchers("/petdoctor/get/{username}")
+                .permitAll()
+                .antMatchers("/petdoctor/post")
+                .permitAll()
                 .antMatchers("/swagger-ui/index.html")
-                .permitAll()
-                // Our public endpoints
-                .antMatchers("/api/public/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/author/**")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/author/search")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/book/**")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/api/book/search")
                 .permitAll()
                 // Our private endpoints
                 .anyRequest()

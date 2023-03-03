@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface RedisService {
 
     void set(AppUser user);
-    Optional<AppUser> get(String username);
+    AppUser get(String username);
 }

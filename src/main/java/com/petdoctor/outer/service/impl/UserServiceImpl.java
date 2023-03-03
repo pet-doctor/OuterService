@@ -21,15 +21,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         redisService.set(user);
-        return redisService.get(user.getUsername())
-                .orElseThrow(RuntimeException::new);
+        return redisService.get(user.getUsername());
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
 
-        return redisService.get(username)
-                .orElseThrow(RuntimeException::new);
+        return redisService.get(username);
     }
 
     //    @Transactional
