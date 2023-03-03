@@ -56,6 +56,8 @@ public class SecurityConfig {
 
         // Set permissions on endpoints
         http.authorizeRequests()
+                .antMatchers("/petdoctor/get/{username}")
+                .permitAll()
                 .antMatchers("/swagger-ui/index.html")
                 .permitAll()
                 // Our public endpoints

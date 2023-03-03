@@ -5,6 +5,7 @@ import com.petdoctor.outer.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.HttpURLConnection;
@@ -32,5 +33,17 @@ public class OuterController {
     public ResponseEntity<?> tryPostAccess() {
 
         return null;
+    }
+
+    @GetMapping("/get/{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    ((UserDetailsService)userService).loadUserByUsername(username));
+        } catch(RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }
