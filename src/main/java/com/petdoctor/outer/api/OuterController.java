@@ -8,8 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.HttpURLConnection;
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
@@ -46,4 +44,17 @@ public class OuterController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PostMapping("/post")
+    public ResponseEntity<?> getUser(@RequestBody AppUser user) {
+
+        try {
+
+            userService.registerUser(user);
+            return ResponseEntity.ok().build();
+        } catch(RuntimeException e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
 }

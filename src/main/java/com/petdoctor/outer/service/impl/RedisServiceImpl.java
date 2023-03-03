@@ -1,42 +1,40 @@
 package com.petdoctor.outer.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petdoctor.outer.model.AppUser;
-import com.petdoctor.outer.repository.UserRepository;
 import com.petdoctor.outer.service.RedisService;
 import com.petdoctor.outer.tool.JsonProcessor;
-import com.redis.om.spring.annotations.EnableRedisDocumentRepositories;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@EnableRedisDocumentRepositories
 public class RedisServiceImpl implements RedisService {
 
-    private final UserRepository userRepository;
+    public static final String HASH_KEY = "Users";
+    private final RedisTemplate<String, AppUser> redisTemplate;
 
     @Override
     public void set(AppUser user) {
 
-        JsonNode node = JsonProcessor.parseToJsonNode(user);
+        redisTemplate.opsForHash().put(HASH_KEY, user.getUsername(), user);
 
-        if (node == null) {
-            throw new RuntimeException("aboba");
-        }
-
-        String username = user.getUsername();
-        JsonNode changedNode = JsonProcessor.removeFieldFromJson(username, node);
-
-        userRepository.save(user);
     }
 
     @Override
     public AppUser get(String username) {
 
-        AppUser appUser = userRepository.loadByUsername(username)
-                .orElseThrow(RuntimeException::new);
+        AppUser user = (AppUser) redisTemplate.opsForHash().get(HASH_KEY, username);
 
-        return appUser;
+        if (user == null) {
+            throw new RuntimeException();
+        }
+
+        return user;
     }
 }

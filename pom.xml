@@ -60,12 +60,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.redis.om</groupId>
-            <artifactId>redis-om-spring</artifactId>
-            <version>0.3.0-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
@@ -89,13 +83,6 @@
             <version>${springdoc-openapi-ui.version}</version>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>snapshots-repo</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
