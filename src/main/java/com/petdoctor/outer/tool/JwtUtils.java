@@ -3,12 +3,9 @@ package com.petdoctor.outer.tool;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.RequiredArgsConstructor;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -18,15 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static java.lang.String.format;
-
-@Component
-@RequiredArgsConstructor
+@UtilityClass
 public class JwtUtils {
 
     private final static String PASSWORD_FIELD = "password";
-//    @Value("${jwt.expiry}")
-    private Long expiry = 36000L;
+    //    @Value("${jwt.expiry}")
+    private final Long expiry = 36000L;
 
     @Value("${jwt.public.key}")
     private RSAPublicKey rsaPublicKey;

@@ -21,7 +21,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final RedisService redisService;
-    private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         UserDetails foundUser = loadUserByUsername(appUser.getUsername());
 
-        return jwtUtils.generateToken(foundUser);
+        return JwtUtils.generateToken(foundUser);
     }
 
     @Override

@@ -17,7 +17,6 @@ public class RedisServiceImpl implements RedisService {
     public void set(AppUser user) {
 
         redisTemplate.opsForHash().put(HASH_KEY, user.getUsername(), user);
-
     }
 
     @Override

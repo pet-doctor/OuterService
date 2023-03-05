@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @EnableWebSecurity
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
+    //    TODO: WTF? Why this controller is forming cycle with AuManager?
     @PostMapping("/login")
-    public ResponseEntity<AppUser> login(@RequestBody AppUser user) {
+    public ResponseEntity<AppUser> login(@RequestBody AppUser user, AuthenticationManager authenticationManager) {
         try {
 
             authenticationManager.authenticate(

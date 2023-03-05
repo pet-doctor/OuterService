@@ -22,30 +22,29 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final static int JWT_BEGIN_IDX = 7;
-
-    private final JwtUtils jwtUtils;
+    private final static String BEARER = "Bearer";
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(final HttpServletRequest request,
+                                    final HttpServletResponse response,
+                                    final FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
 
             filterChain.doFilter(request, response);
             return;
         }
 
         final String jwt = authHeader.substring(JWT_BEGIN_IDX);
-        final String username = jwtUtils.extractUsername(jwt);
+        final String username = JwtUtils.extractUsername(jwt);
 
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            final boolean isTokenValid = jwtUtils.isTokenValid(jwt, userDetails);
+            final boolean isTokenValid = JwtUtils.isTokenValid(jwt, userDetails);
             if (isTokenValid) {
 
                 UsernamePasswordAuthenticationToken authToken =

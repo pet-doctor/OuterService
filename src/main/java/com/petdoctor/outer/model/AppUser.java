@@ -7,13 +7,14 @@ import org.springframework.data.redis.core.RedisHash;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @RedisHash("Users")
-public class AppUser {
+public class AppUser implements Serializable {
 
     @JsonProperty("id")
     @Id
