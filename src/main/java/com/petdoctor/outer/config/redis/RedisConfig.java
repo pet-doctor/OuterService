@@ -14,31 +14,6 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-//@Configuration
-//public class RedisConfig {
-//
-//    @Bean
-//    JedisConnectionFactory jedisConnectionFactory() {
-//
-//        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-//        redisStandaloneConfiguration.setHostName("localhost");
-//        redisStandaloneConfiguration.setPort(6379);
-//
-//        return new JedisConnectionFactory(redisStandaloneConfiguration);
-//    }
-//
-//    @Bean
-//    public RedisTemplate<String, JsonNode> redisTemplate() {
-//
-//        RedisTemplate<String, JsonNode> template = new RedisTemplate<>();
-//        template.setConnectionFactory(jedisConnectionFactory());
-//        template.setKeySerializer(new StringRedisSerializer());
-//        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-//        template.afterPropertiesSet();
-//        return template;
-//    }
-//}
-
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {

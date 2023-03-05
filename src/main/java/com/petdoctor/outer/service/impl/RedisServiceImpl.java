@@ -1,16 +1,10 @@
 package com.petdoctor.outer.service.impl;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.petdoctor.outer.model.AppUser;
 import com.petdoctor.outer.service.RedisService;
-import com.petdoctor.outer.tool.JsonProcessor;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

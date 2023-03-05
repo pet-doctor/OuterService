@@ -3,18 +3,34 @@ package com.petdoctor.outer.service.impl;
 import com.petdoctor.outer.model.AppUser;
 import com.petdoctor.outer.service.RedisService;
 import com.petdoctor.outer.service.UserService;
+import com.petdoctor.outer.tool.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final RedisService redisService;
+    private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public String login(AppUser appUser) {
+
+        UserDetails foundUser = loadUserByUsername(appUser.getUsername());
+
+        return jwtUtils.generateToken(foundUser);
+    }
 
     @Override
     public AppUser registerUser(AppUser user) {
@@ -27,7 +43,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
 
-        return redisService.get(username);
+        AppUser user = redisService.get(username);
+        if (user == null)
+            throw new UsernameNotFoundException("Username not found in db");
+
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
+
+        return new User(user.getUsername(), user.getPassword(), authorities);
     }
 
     //    @Transactional
